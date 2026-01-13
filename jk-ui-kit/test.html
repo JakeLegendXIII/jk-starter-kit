@@ -1,4 +1,4 @@
-<html lan="en">
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,8 @@
         <my-badge>New</my-badge>
 
         <my-button label="huzzah"><span>👍</span>Click Me</my-button>
-        <my-button disabled>Also Click</my-button>
+        <my-button disabled class="themed">Also Click</my-button>
+        <my-button disabled class="themed2">Also Click</my-button>
 
         <style>
             my-badge {                
@@ -18,7 +19,19 @@
                 background-color: #007bff;
                 color: white;
                 border-radius: 4px;
-            }            
+            }      
+            my-button.themed {
+                --button-bg-color: purple;
+                --button-color: yellow;
+                --button-border-radius: 12px;
+                --button-padding: 2rem;
+            }      
+            .themed2::part(control) {
+                background-color: orange;
+                color: black;
+                border-radius: 0;
+                padding: 0.5rem 3rem;
+            }
         </style>
 
         <style>
@@ -69,15 +82,21 @@
                 render() {
                     this.#shadowRoot.innerHTML = `
                         <style>
+                            :host {
+                                --button-border-radius: 4px;
+                                --button-color: white;
+                                --button-bg-color: darkgreen;
+                                --button-padding: 1rem;
+                             }
                              button {
-                                 padding: 1rem;
-                                 background-color: darkgreen;
-                                 color: black;                
-                                 border-radius: 4px;                    
+                                 padding: var(--button-padding);
+                                 background-color: var(--button-bg-color);
+                                 color: var(--button-color);                
+                                 border-radius: var(--button-border-radius);                    
                              }                
                         </style>      
                         <div>${this.label}</div>      
-                        <button ${this.disabled ? 'disabled' : ''}>
+                        <button part='control' ${this.disabled ? 'disabled' : ''}>
                             <slot name="icon"></slot>
                             <slot></slot>
                         </button>
