@@ -9,8 +9,8 @@
 
         <my-badge>New</my-badge>
 
-        <my-button><span>👍</span>Click Me</my-button>
-        <my-button>Also Click</my-button>
+        <my-button label="huzzah"><span>👍</span>Click Me</my-button>
+        <my-button disabled>Also Click</my-button>
 
         <style>
             my-badge {                
@@ -29,10 +29,45 @@
 
         <script>
             class MyButton extends HTMLElement {
+                static observedAttributes = ['label', 'disabled'];
+                // declare private
+                #label = 'Blah';                
+                #shadowRoot;
+                #disabled = false;
+
+                get label() {
+                    return this.#label;
+                }
+
+                set label(value) {
+                    this.#label = value;
+                    this.render();
+                }
+
+                get disabled() {
+                    return this.#disabled;
+                }
+
+                set disabled(value) {
+                    this.#disabled = value;
+                    this.render();
+                }
+
                 constructor() {
                     super();
-                    const shadowRoot = this.attachShadow({ mode: 'open' });
-                    shadowRoot.innerHTML = `
+                    this.#shadowRoot = this.attachShadow({ mode: 'open' }); 
+                    this.render();
+                }
+                attributeChangedCallback(name, oldValue, newValue) {
+                    if (name === 'label') {
+                        this.label = newValue;                        
+                    } else if (name === 'disabled') {
+                        this.disabled = newValue !== null;
+                    }
+                }
+
+                render() {
+                    this.#shadowRoot.innerHTML = `
                         <style>
                              button {
                                  padding: 1rem;
@@ -40,8 +75,9 @@
                                  color: black;                
                                  border-radius: 4px;                    
                              }                
-                        </style>            
-                        <button>
+                        </style>      
+                        <div>${this.label}</div>      
+                        <button ${this.disabled ? 'disabled' : ''}>
                             <slot name="icon"></slot>
                             <slot></slot>
                         </button>
@@ -49,6 +85,7 @@
                 }
             }
             customElements.define('my-button', MyButton);
+
         </script>
     </body>
 </html>
