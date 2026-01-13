@@ -9,16 +9,43 @@
 
         <my-badge>New</my-badge>
 
+        <my-button></my-button>
+        <my-button></my-button>
+
         <style>
-            my-badge {
-                display: inline-block;
-                padding: 10px 20px;
+            my-badge {                
+                padding: 5px;
                 background-color: #007bff;
                 color: white;
-                border-radius: 5px;
-                font-family: Arial, sans-serif;
-                font-size: 16px;
+                border-radius: 4px;
+            }            
+        </style>
+
+        <style>
+            html body button {
+                background-color: brown;
             }
         </style>
+
+        <script>
+            class MyButton extends HTMLElement {
+                constructor() {
+                    super();
+                    const shadowRoot = this.attachShadow({ mode: 'open' });
+                    shadowRoot.innerHTML = `
+                        <style>
+                             button {
+                                 padding: 1rem;
+                                 background-color: darkgreen;
+                                 color: black;                
+                                 border-radius: 4px;                    
+                             }                
+                        </style>            
+                        <button>Click me</button>
+                    `;
+                }
+            }
+            customElements.define('my-button', MyButton);
+        </script>
     </body>
 </html>
