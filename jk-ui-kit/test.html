@@ -9,8 +9,8 @@
 
         <my-badge>New</my-badge>
 
-        <my-button></my-button>
-        <my-button></my-button>
+        <my-button><span>👍</span>Click Me</my-button>
+        <my-button>Also Click</my-button>
 
         <style>
             my-badge {                
@@ -41,7 +41,10 @@
                                  border-radius: 4px;                    
                              }                
                         </style>            
-                        <button>Click me</button>
+                        <button>
+                            <slot name="icon"></slot>
+                            <slot></slot>
+                        </button>
                     `;
                 }
             }
